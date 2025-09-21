@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GADU Containers App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .header-logo {
+            height: 50px;
+            width: auto;
+        }
+        /* Estilo para que la tarjeta sea un bloque de enlace */
+        .product-card-link {
+            text-decoration: none;
+            color: inherit;
+        }
+        /* Estilos para el carrusel de imágenes */
+        .image-carousel {
+            position: relative;
+            width: 100%;
+            height: 192px; /* h-48 */
+            overflow: hidden;
+            border-radius: 0.5rem; /* rounded-md */
+        }
+        .image-carousel img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+        .image-carousel img.active {
+            display: block;
+        }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            transition: background-color 0.3s ease;
+        }
+        .carousel-btn:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .carousel-btn.prev {
+            left: 8px;
+        }
+        .carousel-btn.next {
+            right: 8px;
+        }
+        .carousel-dots {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+        .image-dot {
+            height: 10px;
+            width: 10px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .image-dot.active {
+            background-color: #13B71C;
+        }
+    </style>
+    <!-- Favicon para la pestaña del navegador -->
+    <link rel="icon" href="assets/icon.png">
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="#" class="flex items-center space-x-2">
+                <img src="assets/icon.png" alt="GADU Containers Logo" class="header-logo">
+                <span class="text-3xl font-bold text-gray-800">
+                    <span style="color: #13B71C;">GADU</span>
+                </span>
+            </a>
+            <nav>
+                <ul class="flex space-x-4">
+                    <li><a href="#" class="text-gray-600 hover:text-green-600 transition-colors duration-300 font-medium">Inicio</a></li>
+                    <li><a href="contact.html" class="text-gray-600 hover:text-green-600 transition-colors duration-300 font-medium">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 flex-grow">
+        <h1 class="text-center text-4xl font-extrabold text-gray-800 mb-8">Nuestros Productos</h1>
+
+        <!-- Filtros y Ordenamiento -->
+        <div class="bg-white p-6 rounded-lg shadow-sm mb-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-4">
+            <!-- Filtro por Categoría -->
+            <div class="w-full md:w-1/3">
+                <label for="category-filter" class="block text-gray-700 font-semibold mb-2">Filtrar por Categoría:</label>
+                <select id="category-filter" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2" style="border-color: #13B71C; box-shadow: 0 0 0 2px rgba(19, 183, 28, 0.25);">
+                    <option value="all">Todas las Categorías</option>
+                    <!-- Las categorías se llenarán dinámicamente -->
+                </select>
+            </div>
+            <!-- Filtro por Subcategoría -->
+            <div class="w-full md:w-1/3">
+                <label for="subcategory-filter" class="block text-gray-700 font-semibold mb-2">Filtrar por Subcategoría:</label>
+                <select id="subcategory-filter" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2" style="border-color: #13B71C; box-shadow: 0 0 0 2px rgba(19, 183, 28, 0.25);">
+                    <option value="all">Todas las Subcategorías</option>
+                    <!-- Las subcategorías se llenarán dinámicamente -->
+                </select>
+            </div>
+            <!-- Ordenamiento por Precio -->
+            <div class="w-full md:w-1/3">
+                <label for="sort-by-price" class="block text-gray-700 font-semibold mb-2">Ordenar por Precio:</label>
+                <select id="sort-by-price" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2" style="border-color: #13B71C; box-shadow: 0 0 0 2px rgba(19, 183, 28, 0.25);">
+                    <option value="default">Por Defecto</option>
+                    <option value="asc">Menor a Mayor</option>
+                    <option value="desc">Mayor a Menor</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Contenedor de Productos -->
+        <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Las tarjetas de productos se renderizarán aquí -->
+        </div>
+
+        <!-- Mensajes de Estado -->
+        <div id="message" class="text-center text-gray-500 font-medium mt-8 hidden"></div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-white text-center p-4" style="background-color: #84a484;">
+        <div class="container mx-auto">
+            <p>&copy; 2024 GADU Containers App. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // **PASO 1: Inserta tu objeto de configuración de Firebase aquí**
+        const firebaseConfig = {
+            apiKey: "AIzaSyCsRnbAvV5vLDv5-rMq8uT7rcCK9YRz-UA",
+            authDomain: "appgadustore.firebaseapp.com",
+            projectId: "appgadustore",
+            storageBucket: "appgadustore.firebasestorage.app",
+            messagingSenderId: "761196485216",
+            appId: "1:761196485216:web:612176268c5f2480304105",
+            measurementId: "G-VDKN4343F7"
+        };
+
+        // Inicializa Firebase
+        let firebaseApp;
+        let db;
+        try {
+            firebaseApp = initializeApp(firebaseConfig);
+            db = getFirestore(firebaseApp);
+        } catch (e) {
+            console.error("Error al inicializar Firebase. Revisa tu objeto de configuración.", e);
+        }
+
+        const productsContainer = document.getElementById('products-container');
+        const messageElement = document.getElementById('message');
+        const categoryFilter = document.getElementById('category-filter');
+        const subcategoryFilter = document.getElementById('subcategory-filter');
+        const sortByPrice = document.getElementById('sort-by-price');
+        let allProducts = [];
+
+        // Función para mostrar mensajes de estado
+        const showMessage = (msg) => {
+            messageElement.textContent = msg;
+            messageElement.classList.remove('hidden');
+        };
+
+        // Función para renderizar una tarjeta de producto
+        const renderProductCard = (product) => {
+            const imageUrls = Array.isArray(product.imageUrl) ? product.imageUrl : [product.imageUrl];
+            const hasMultipleImages = imageUrls.length > 1;
+
+            const imagesHtml = imageUrls.map((url, index) => {
+                return `<img src="${url}" alt="${product.name} - ${index + 1}" class="w-full h-full object-cover ${index === 0 ? 'active' : ''}">`;
+            }).join('');
+
+            const dotsHtml = hasMultipleImages ? imageUrls.map((_, index) => {
+                return `<span class="image-dot" data-index="${index}"></span>`;
+            }).join('') : '';
+
+            return `
+                <a href="product-details.html?id=${product.id}" class="product-card-link">
+                    <div class="relative bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden" style="box-shadow: 0 4px 6px -1px #84a484, 0 2px 4px -1px #84a484;">
+                        <div class="image-carousel" data-product-id="${product.id}" data-current-index="0" data-has-multiple="${hasMultipleImages}">
+                            ${imagesHtml}
+                            ${hasMultipleImages ? `
+                                <button class="carousel-btn prev">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                    </svg>
+                                </button>
+                                <button class="carousel-btn next">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </button>
+                                <div class="carousel-dots">
+                                    ${dotsHtml}
+                                </div>
+                            ` : ''}
+                        </div>
+                        <h2 class="text-xl font-bold text-gray-800 mt-4 mb-2">${product.name}</h2>
+                        <p class="text-sm text-gray-500 mb-2">${product.category} | ${product.subcategory}</p>
+                        <p class="text-2xl font-extrabold" style="color: #13B71C;">$${product.price.toLocaleString('es-CO')}</p>
+                    </div>
+                </a>
+            `;
+        };
+
+        // Función para actualizar la imagen del carrusel y los puntos
+        const updateCarousel = (carousel, newIndex) => {
+            const images = carousel.querySelectorAll('img');
+            const dots = carousel.querySelectorAll('.image-dot');
+            const totalImages = images.length;
+            
+            // Si no hay imágenes, salimos.
+            if (totalImages === 0) return;
+
+            // Aseguramos que el índice no se salga de los límites
+            const finalIndex = (newIndex + totalImages) % totalImages;
+            
+            // Escondemos todas las imágenes y removemos la clase 'active' de los puntos
+            images.forEach(img => img.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+
+            // Mostramos la nueva imagen y activamos el nuevo punto
+            images[finalIndex].classList.add('active');
+            if (dots[finalIndex]) {
+                dots[finalIndex].classList.add('active');
+            }
+
+            // Actualizamos el índice en el elemento contenedor
+            carousel.dataset.currentIndex = finalIndex;
+        };
+        
+        // Función para configurar los eventos de cada carrusel
+        const setupCarousels = () => {
+            const carousels = document.querySelectorAll('.image-carousel');
+            carousels.forEach(carousel => {
+                const hasMultipleImages = carousel.dataset.hasMultiple === 'true';
+                if (!hasMultipleImages) return;
+
+                const prevBtn = carousel.querySelector('.prev');
+                const nextBtn = carousel.querySelector('.next');
+                const dots = carousel.querySelectorAll('.image-dot');
+
+                // Configurar el punto inicial
+                updateCarousel(carousel, 0);
+
+                // Evento para el botón 'siguiente'
+                nextBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const currentIndex = parseInt(carousel.dataset.currentIndex);
+                    updateCarousel(carousel, currentIndex + 1);
+                });
+
+                // Evento para el botón 'anterior'
+                prevBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const currentIndex = parseInt(carousel.dataset.currentIndex);
+                    updateCarousel(carousel, currentIndex - 1);
+                });
+
+                // Eventos para los puntos de navegación
+                dots.forEach(dot => {
+                    dot.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const newIndex = parseInt(e.target.dataset.index);
+                        updateCarousel(carousel, newIndex);
+                    });
+                });
+            });
+        };
+
+        // Función para renderizar todos los productos en el DOM
+        const renderProducts = (productsToRender) => {
+            if (productsToRender.length === 0) {
+                productsContainer.innerHTML = '';
+                showMessage('No se encontraron productos que coincidan con los filtros.');
+                return;
+            }
+            productsContainer.innerHTML = productsToRender.map(renderProductCard).join('');
+            setupCarousels(); // Llamamos a la función para configurar los carruseles
+            messageElement.classList.add('hidden');
+        };
+
+        // Función para poblar el filtro de categorías y subcategorías
+        const populateFilters = (products) => {
+            const categories = [...new Set(products.map(p => p.category))];
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                categoryFilter.appendChild(option);
+            });
+            updateSubcategories();
+        };
+
+        // Función para actualizar las subcategorías según la categoría seleccionada
+        const updateSubcategories = () => {
+            const selectedCategory = categoryFilter.value;
+            const subcategories = (selectedCategory === 'all')
+                ? [...new Set(allProducts.map(p => p.subcategory))]
+                : [...new Set(allProducts.filter(p => p.category === selectedCategory).map(p => p.subcategory))];
+
+            subcategoryFilter.innerHTML = '<option value="all">Todas las Subcategorías</option>';
+            subcategories.forEach(subcategory => {
+                const option = document.createElement('option');
+                option.value = subcategory;
+                option.textContent = subcategory;
+                subcategoryFilter.appendChild(option);
+            });
+        };
+
+        // Función para filtrar y ordenar los productos
+        const filterAndSortProducts = () => {
+            let filteredProducts = [...allProducts];
+            const selectedCategory = categoryFilter.value;
+            const selectedSubcategory = subcategoryFilter.value;
+            const selectedSort = sortByPrice.value;
+
+            if (selectedCategory !== 'all') {
+                filteredProducts = filteredProducts.filter(product => product.category === selectedCategory);
+            }
+
+            if (selectedSubcategory !== 'all') {
+                filteredProducts = filteredProducts.filter(product => product.subcategory === selectedSubcategory);
+            }
+
+            if (selectedSort === 'asc') {
+                filteredProducts.sort((a, b) => a.price - b.price);
+            } else if (selectedSort === 'desc') {
+                filteredProducts.sort((a, b) => b.price - a.price);
+            }
+
+            renderProducts(filteredProducts);
+        };
+
+        // Event Listeners para los filtros
+        categoryFilter.addEventListener('change', () => {
+            updateSubcategories();
+            filterAndSortProducts();
+        });
+        subcategoryFilter.addEventListener('change', filterAndSortProducts);
+        sortByPrice.addEventListener('change', filterAndSortProducts);
+
+        // Cargar productos de Firestore
+        const fetchProducts = async () => {
+            try {
+                showMessage('Cargando productos...');
+                if (!db) {
+                    throw new Error('Firestore no está inicializado.');
+                }
+                const productsCollection = collection(db, 'products');
+                const productsSnapshot = await getDocs(productsCollection);
+                allProducts = productsSnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                populateFilters(allProducts);
+                filterAndSortProducts();
+            } catch (error) {
+                showMessage(`Error: ${error.message}. Asegúrate de que la colección 'products' exista y esté correctamente configurada.`);
+                console.error('Error al cargar productos:', error);
+            }
+        };
+
+        window.addEventListener('load', fetchProducts);
+    </script>
+</body>
+</html>

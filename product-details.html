@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Producto</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .header-logo {
+            height: 50px;
+            width: auto;
+        }
+        /* Estilos para la galería de imágenes */
+        .gallery-image {
+            display: none;
+        }
+        .gallery-image.active {
+            display: block;
+        }
+        .thumbnail-image {
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+        .thumbnail-image.active {
+            border-color: #13B71C;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-2">
+                <img src="assets/icon.png" alt="GADU Containers Logo" class="header-logo">
+                <span class="text-3xl font-bold text-gray-800">
+                    <span style="color: #13B71C;">GADU</span> Containers
+                </span>
+            </a>
+            <nav>
+                <ul class="flex space-x-4">
+                    <li><a href="index.html" class="text-gray-600 hover:text-green-600 transition-colors duration-300 font-medium">Volver al inicio</a></li>
+                    <li><a href="contact.html" class="text-gray-600 hover:text-green-600 transition-colors duration-300 font-medium">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 flex-grow">
+        <div id="product-detail-container" class="bg-white p-8 rounded-xl shadow-lg" style="box-shadow: 0 4px 6px -1px #84a484, 0 2px 4px -1px #84a484;">
+            <p id="loading-message" class="text-center text-gray-500 font-medium">Cargando detalles del producto...</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-white text-center p-4 mt-8" style="background-color: #84a484;">
+        <div class="container mx-auto">
+            <p>&copy; 2024 GADU Containers App. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // **PASO 1: Inserta tu objeto de configuración de Firebase aquí**
+        const firebaseConfig = {
+            apiKey: "AIzaSyCsRnbAvV5vLDv5-rMq8uT7rcCK9YRz-UA",
+            authDomain: "appgadustore.firebaseapp.com",
+            projectId: "appgadustore",
+            storageBucket: "appgadustore.firebasestorage.app",
+            messagingSenderId: "761196485216",
+            appId: "1:761196485216:web:612176268c5f2480304105",
+            measurementId: "G-VDKN4343F7"
+        };
+
+        // Inicializa Firebase
+        let firebaseApp;
+        let db;
+        try {
+            firebaseApp = initializeApp(firebaseConfig);
+            db = getFirestore(firebaseApp);
+        } catch (e) {
+            console.error("Error al inicializar Firebase. Revisa tu objeto de configuración.", e);
+        }
+
+        const productDetailContainer = document.getElementById('product-detail-container');
+        const loadingMessage = document.getElementById('loading-message');
+
+        const renderProductDetails = (product) => {
+            const imageUrls = Array.isArray(product.imageUrl) ? product.imageUrl : [product.imageUrl];
+            
+            const galleryHtml = imageUrls.map((url, index) => {
+                const isActive = index === 0 ? 'active' : '';
+                return `<img src="${url}" alt="${product.name} - Imagen ${index + 1}" class="w-full h-96 object-contain gallery-image ${isActive}">`;
+            }).join('');
+
+            const thumbnailsHtml = imageUrls.map((url, index) => {
+                const isActive = index === 0 ? 'active' : '';
+                return `<img src="${url}" alt="Thumbnail ${index + 1}" class="w-20 h-20 object-cover rounded-md thumbnail-image ${isActive}" data-index="${index}">`;
+            }).join('');
+
+            const html = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Galería de Imágenes -->
+                    <div class="flex flex-col items-center">
+                        <div class="relative w-full h-96 mb-4 rounded-xl overflow-hidden bg-gray-200 flex items-center justify-center">
+                            ${galleryHtml}
+                        </div>
+                        <div class="flex space-x-2 overflow-x-auto p-2">
+                            ${thumbnailsHtml}
+                        </div>
+                    </div>
+                    <!-- Detalles del Producto -->
+                    <div class="flex flex-col justify-start">
+                        <h1 class="text-4xl font-bold text-gray-800 mb-2">${product.name}</h1>
+                        <p class="text-xl text-gray-500 mb-4">${product.category} | ${product.subcategory}</p>
+                        <p class="text-5xl font-extrabold text-green-600 mb-6">$${product.price.toLocaleString('es-CO')}</p>
+                        
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-2">Descripción</h2>
+                        <p class="text-gray-700 mb-6">${product.description || 'Sin descripción disponible.'}</p>
+                        
+                        <button id="buy-button" class="w-full text-white font-semibold py-4 px-6 rounded-md text-xl focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-300" style="background-color: #13B71C; hover:background-color: #0d8c11; box-shadow: 0 0 0 2px rgba(19, 183, 28, 0.25);">
+                            Comprar por WhatsApp
+                        </button>
+                    </div>
+                </div>
+            `;
+            productDetailContainer.innerHTML = html;
+
+            const buyButton = document.getElementById('buy-button');
+            buyButton.addEventListener('click', () => handleBuyClick(product));
+            
+            const galleryImages = productDetailContainer.querySelectorAll('.gallery-image');
+            const thumbnails = productDetailContainer.querySelectorAll('.thumbnail-image');
+            
+            thumbnails.forEach(thumbnail => {
+                thumbnail.addEventListener('click', () => {
+                    const targetIndex = parseInt(thumbnail.dataset.index);
+                    galleryImages.forEach((img, index) => {
+                        if (index === targetIndex) {
+                            img.classList.add('active');
+                        } else {
+                            img.classList.remove('active');
+                        }
+                    });
+                    thumbnails.forEach(thumb => thumb.classList.remove('active'));
+                    thumbnail.classList.add('active');
+                });
+            });
+        };
+
+        const handleBuyClick = (product) => {
+            const whatsappNumber = "+573106927989";
+            const message = `Hola, estoy interesado en comprar el producto: ${product.name}, con precio de $${product.price.toLocaleString('es-CO')}.`;
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        };
+
+        const fetchProductDetails = async () => {
+            loadingMessage.style.display = 'block';
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+
+            if (!productId) {
+                productDetailContainer.innerHTML = '<p class="text-center text-red-500 font-semibold">Error: No se encontró el ID del producto en la URL.</p>';
+                loadingMessage.style.display = 'none';
+                return;
+            }
+
+            try {
+                if (!db) {
+                    throw new Error('Firestore no está inicializado.');
+                }
+                const docRef = doc(db, 'products', productId);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    renderProductDetails(docSnap.data());
+                } else {
+                    productDetailContainer.innerHTML = '<p class="text-center text-gray-500 font-semibold">Producto no encontrado.</p>';
+                }
+            } catch (error) {
+                productDetailContainer.innerHTML = '<p class="text-center text-red-500 font-semibold">Error al cargar los detalles del producto. Por favor, inténtelo de nuevo más tarde.</p>';
+                console.error('Error al cargar detalles del producto:', error);
+            } finally {
+                loadingMessage.style.display = 'none';
+            }
+        };
+
+        window.addEventListener('load', fetchProductDetails);
+    </script>
+</body>
+</html>
