@@ -3,90 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GADU App</title>
+    <title>GADU App - Contenedores</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
-        }
-        .header-logo {
-            height: 50px;
-            width: auto;
-        }
-        /* Estilo para que la tarjeta sea un bloque de enlace */
-        .product-card-link {
-            text-decoration: none;
-            color: inherit;
-        }
-        /* Estilos para el carrusel de imágenes */
-        .image-carousel {
-            position: relative;
+        /* CSS Base */
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .header-logo { height: 50px; width: auto; }
+        .product-card-link { text-decoration: none; color: inherit; }
+
+        /* Estilos específicos del Carrusel de Banners */
+        .banner-slide {
+            display: none;
+            height: 100%; 
             width: 100%;
-            height: 192px; /* h-48 */
-            overflow: hidden;
-            border-radius: 0.5rem; /* rounded-md */
+        }
+        .banner-slide.active {
+            display: block;
+        }
+        .banner-dot {
+            height: 10px; width: 10px; background-color: rgba(255, 255, 255, 0.5); border-radius: 50%; cursor: pointer; transition: background-color 0.3s ease;
+        }
+        .banner-dot.active {
+            background-color: #13B71C;
+        }
+
+        /* Estilos para el carrusel de imágenes de productos */
+        .image-carousel {
+            position: relative; width: 100%; height: 192px; overflow: hidden; border-radius: 0.5rem;
         }
         .image-carousel img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: none;
+            width: 100%; height: 100%; object-fit: cover; display: none;
         }
         .image-carousel img.active {
             display: block;
         }
         .carousel-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            padding: 8px;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 10;
-            transition: background-color 0.3s ease;
+            position: absolute; top: 50%; transform: translateY(-50%); background-color: rgba(0, 0, 0, 0.5); color: white; padding: 8px; border-radius: 50%; cursor: pointer; z-index: 10; transition: background-color 0.3s ease;
         }
-        .carousel-btn:hover {
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-        .carousel-btn.prev {
-            left: 8px;
-        }
-        .carousel-btn.next {
-            right: 8px;
-        }
+        .carousel-btn:hover { background-color: rgba(0, 0, 0, 0.8); }
+        .carousel-btn.prev { left: 8px; }
+        .carousel-btn.next { right: 8px; }
         .carousel-dots {
-            position: absolute;
-            bottom: 8px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 8px;
-            z-index: 10;
+            position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10;
         }
         .image-dot {
-            height: 10px;
-            width: 10px;
-            background-color: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+            height: 10px; width: 10px; background-color: rgba(255, 255, 255, 0.5); border-radius: 50%; cursor: pointer; transition: background-color 0.3s ease;
         }
-        .image-dot.active {
-            background-color: #13B71C;
+        .image-dot.active { background-color: #13B71C; }
+        
+        /* NUEVO: Estilo para las burbujas de categoría */
+        .category-bubble:hover {
+            box-shadow: 0 4px 10px rgba(19, 183, 28, 0.4);
+            background-color: white; /* Fondo blanco al pasar el ratón para resaltar */
         }
     </style>
-    <!-- Favicon para la pestaña del navegador -->
     <link rel="icon" href="assets/icon.png">
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
 
-    <!-- Header -->
     <header class="bg-white shadow-md">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="#" class="flex items-center space-x-2">
@@ -104,29 +82,88 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="container mx-auto px-4 py-8 flex-grow">
+
+        <div id="banner-carousel" class="relative w-full h-[550px] rounded-2xl overflow-hidden shadow-2xl mb-10">
+            
+            <div class="banner-slide active" 
+                 style="background-image: url('assets/bannerglobal.png'); background-size: cover; background-position: center;">
+            </div>
+            
+            <div class="banner-slide" 
+                 style="background-image: url('assets/bannertech.png'); background-size: cover; background-position: center;">
+            </div>
+
+            <div class="banner-slide" 
+                 style="background-image: url('assets/bannersport.png'); background-size: cover; background-position: center;">
+            </div>
+
+            <div class="banner-slide" 
+                 style="background-image: url('assets/bannerfashion.png'); background-size: cover; background-position: center;">
+            </div>
+            
+            <button id="banner-prev" class="carousel-btn prev p-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+            </button>
+            <button id="banner-next" class="carousel-btn next p-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+            </button>
+
+            <div id="banner-dots-container" class="carousel-dots">
+                <span class="banner-dot active" data-index="0"></span>
+                <span class="banner-dot" data-index="1"></span>
+                <span class="banner-dot" data-index="2"></span>
+                <span class="banner-dot" data-index="3"></span>
+            </div>
+        </div>
+        <div class="py-6 mb-10 bg-white rounded-xl shadow-lg">
+            <div id="category-bubbles" class="flex justify-around items-start flex-wrap gap-4 px-4">
+                
+                <div class="category-bubble text-center cursor-pointer p-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:bg-gray-50" data-category="Tecnologia">
+                    <div class="w-20 h-20 mx-auto mb-2 rounded-full flex items-center justify-center border-4" style="border-color: #13B71C; background-color: rgba(19, 183, 28, 0.1);">
+                        <img src="assets/icon-tecnologia.png" alt="Icono Tecnología" class="w-12 h-12 object-contain">
+                    </div>
+                    <p class="font-semibold text-gray-700">Tecnología</p>
+                </div>
+                
+                <div class="category-bubble text-center cursor-pointer p-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:bg-gray-50" data-category="Moda">
+                    <div class="w-20 h-20 mx-auto mb-2 rounded-full flex items-center justify-center border-4" style="border-color: #13B71C; background-color: rgba(19, 183, 28, 0.1);">
+                        <img src="assets/icon-moda.png" alt="Icono Moda" class="w-12 h-12 object-contain">
+                    </div>
+                    <p class="font-semibold text-gray-700">Moda</p>
+                </div>
+                
+                <div class="category-bubble text-center cursor-pointer p-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:bg-gray-50" data-category="Calzado">
+                    <div class="w-20 h-20 mx-auto mb-2 rounded-full flex items-center justify-center border-4" style="border-color: #13B71C; background-color: rgba(19, 183, 28, 0.1);">
+                        <img src="assets/icon-calzado.png" alt="Icono Calzado" class="w-12 h-12 object-contain">
+                    </div>
+                    <p class="font-semibold text-gray-700">Calzado</p>
+                </div>
+                
+                <div class="category-bubble text-center cursor-pointer p-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:bg-gray-50" data-category="all">
+                    <div class="w-20 h-20 mx-auto mb-2 rounded-full flex items-center justify-center border-4" style="border-color: #13B71C; background-color: rgba(19, 183, 28, 0.1);">
+                    <img src="assets/icon-todo.png" alt="Icono Ver Todo" class="w-12 h-12 object-contain">
+                    </div>
+                    <p class="font-semibold text-gray-700">Ver Todo</p>
+                </div>
+            </div>
+        </div>
         <h1 class="text-center text-4xl font-extrabold text-gray-800 mb-8">Nuestros Productos</h1>
 
-        <!-- Filtros y Ordenamiento -->
         <div class="bg-white p-6 rounded-lg shadow-sm mb-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-4">
-            <!-- Filtro por Categoría -->
+            
+            <div class="w-full md:w-1/3">
+                <label for="search-input" class="block text-gray-700 font-semibold mb-2">Buscar Producto:</label>
+                <input type="text" id="search-input" placeholder="Nombre, Categoría o Subcategoría" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2" style="border-color: #13B71C; box-shadow: 0 0 0 2px rgba(19, 183, 28, 0.25);">
+            </div>
+            
             <div class="w-full md:w-1/3">
                 <label for="category-filter" class="block text-gray-700 font-semibold mb-2">Filtrar por Categoría:</label>
                 <select id="category-filter" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2" style="border-color: #13B71C; box-shadow: 0 0 0 2px rgba(19, 183, 28, 0.25);">
                     <option value="all">Todas las Categorías</option>
-                    <!-- Las categorías se llenarán dinámicamente -->
-                </select>
+                    </select>
             </div>
-            <!-- Filtro por Subcategoría -->
-            <div class="w-full md:w-1/3">
-                <label for="subcategory-filter" class="block text-gray-700 font-semibold mb-2">Filtrar por Subcategoría:</label>
-                <select id="subcategory-filter" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2" style="border-color: #13B71C; box-shadow: 0 0 0 2px rgba(19, 183, 28, 0.25);">
-                    <option value="all">Todas las Subcategorías</option>
-                    <!-- Las subcategorías se llenarán dinámicamente -->
-                </select>
-            </div>
-            <!-- Ordenamiento por Precio -->
+            
             <div class="w-full md:w-1/3">
                 <label for="sort-by-price" class="block text-gray-700 font-semibold mb-2">Ordenar por Precio:</label>
                 <select id="sort-by-price" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2" style="border-color: #13B71C; box-shadow: 0 0 0 2px rgba(19, 183, 28, 0.25);">
@@ -136,17 +173,12 @@
                 </select>
             </div>
         </div>
-
-        <!-- Contenedor de Productos -->
         <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            <!-- Las tarjetas de productos se renderizarán aquí -->
-        </div>
+            </div>
 
-        <!-- Mensajes de Estado -->
         <div id="message" class="text-center text-gray-500 font-medium mt-8 hidden"></div>
     </main>
 
-    <!-- Footer -->
     <footer class="text-white text-center p-4" style="background-color: #84a484;">
         <div class="container mx-auto">
             <p>&copy; 2024 GADU App. Todos los derechos reservados.</p>
@@ -157,7 +189,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // **PASO 1: Inserta tu objeto de configuración de Firebase aquí**
+        // **PASO 1: Inserta tu objeto de configuración de Firebase aquí (Original)**
         const firebaseConfig = {
             apiKey: "AIzaSyCsRnbAvV5vLDv5-rMq8uT7rcCK9YRz-UA",
             authDomain: "appgadustore.firebaseapp.com",
@@ -181,17 +213,80 @@
         const productsContainer = document.getElementById('products-container');
         const messageElement = document.getElementById('message');
         const categoryFilter = document.getElementById('category-filter');
-        const subcategoryFilter = document.getElementById('subcategory-filter');
         const sortByPrice = document.getElementById('sort-by-price');
+        const searchInput = document.getElementById('search-input');
         let allProducts = [];
 
-        // Función para mostrar mensajes de estado
+        // === Lógica del Carrusel de Banners (Original) ===
+        const bannerSlides = document.querySelectorAll('#banner-carousel .banner-slide');
+        const bannerDotsContainer = document.getElementById('banner-dots-container');
+        const bannerPrevBtn = document.getElementById('banner-prev');
+        const bannerNextBtn = document.getElementById('banner-next');
+        let currentBannerIndex = 0;
+        let bannerInterval;
+        const totalBanners = bannerSlides.length;
+
+        const updateBannerCarousel = (newIndex) => {
+            if (totalBanners === 0) return;
+            let finalIndex = (newIndex + totalBanners) % totalBanners;
+            
+            bannerSlides.forEach(slide => slide.classList.remove('active'));
+            const bannerDots = bannerDotsContainer.querySelectorAll('.banner-dot');
+            bannerDots.forEach(dot => dot.classList.remove('active'));
+            
+            bannerSlides[finalIndex].classList.add('active');
+            if (bannerDots[finalIndex]) {
+                bannerDots[finalIndex].classList.add('active');
+            }
+            currentBannerIndex = finalIndex;
+        };
+
+        const startBannerAutoPlay = () => {
+            clearInterval(bannerInterval);
+            bannerInterval = setInterval(() => {
+                updateBannerCarousel(currentBannerIndex + 1);
+            }, 5000);
+        };
+
+        bannerNextBtn.addEventListener('click', () => {
+            updateBannerCarousel(currentBannerIndex + 1);
+            startBannerAutoPlay();
+        });
+
+        bannerPrevBtn.addEventListener('click', () => {
+            updateBannerCarousel(currentBannerIndex - 1);
+            startBannerAutoPlay();
+        });
+
+        // === FIN: Lógica del Carrusel de Banners ===
+        
+        // NUEVA FUNCIÓN: Configuración de las Burbujas de Categoría
+        const setupCategoryBubbles = () => {
+            const bubbles = document.querySelectorAll('.category-bubble');
+            bubbles.forEach(bubble => {
+                bubble.addEventListener('click', () => {
+                    const category = bubble.dataset.category;
+                    
+                    // 1. Actualizar el filtro dropdown
+                    categoryFilter.value = category; 
+                    
+                    // 2. Ejecutar la función de filtrado
+                    filterAndSortProducts();
+
+                    // Opcional: Desplazarse a la sección de productos para que el usuario vea el resultado
+                    document.getElementById('products-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+            });
+        };
+
+
+        // Función para mostrar mensajes de estado (Original)
         const showMessage = (msg) => {
             messageElement.textContent = msg;
             messageElement.classList.remove('hidden');
         };
 
-        // Función para renderizar una tarjeta de producto
+        // Función para renderizar una tarjeta de producto (Original)
         const renderProductCard = (product) => {
             const imageUrls = Array.isArray(product.imageUrl) ? product.imageUrl : [product.imageUrl];
             const hasMultipleImages = imageUrls.length > 1;
@@ -201,7 +296,7 @@
             }).join('');
 
             const dotsHtml = hasMultipleImages ? imageUrls.map((_, index) => {
-                return `<span class="image-dot" data-index="${index}"></span>`;
+                return `<span class="image-dot ${index === 0 ? 'active' : ''}" data-index="${index}"></span>`;
             }).join('') : '';
 
             return `
@@ -210,12 +305,12 @@
                         <div class="image-carousel" data-product-id="${product.id}" data-current-index="0" data-has-multiple="${hasMultipleImages}">
                             ${imagesHtml}
                             ${hasMultipleImages ? `
-                                <button class="carousel-btn prev">
+                                <button class="carousel-btn prev" onclick="event.preventDefault(); event.stopPropagation();">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                                     </svg>
                                 </button>
-                                <button class="carousel-btn next">
+                                <button class="carousel-btn next" onclick="event.preventDefault(); event.stopPropagation();">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                     </svg>
@@ -226,43 +321,40 @@
                             ` : ''}
                         </div>
                         <h2 class="text-xl font-bold text-gray-800 mt-4 mb-2">${product.name}</h2>
-                        <p class="text-sm text-gray-500 mb-2">${product.category} | ${product.subcategory}</p>
+                        <p class="text-sm text-gray-500 mb-2">${product.category}</p>
                         <p class="text-2xl font-extrabold" style="color: #13B71C;">$${product.price.toLocaleString('es-CO')}</p>
                     </div>
                 </a>
             `;
         };
 
-        // Función para actualizar la imagen del carrusel y los puntos
+        // Función para actualizar la imagen del carrusel y los puntos (Original)
         const updateCarousel = (carousel, newIndex) => {
             const images = carousel.querySelectorAll('img');
             const dots = carousel.querySelectorAll('.image-dot');
             const totalImages = images.length;
             
-            // Si no hay imágenes, salimos.
             if (totalImages === 0) return;
 
-            // Aseguramos que el índice no se salga de los límites
             const finalIndex = (newIndex + totalImages) % totalImages;
             
-            // Escondemos todas las imágenes y removemos la clase 'active' de los puntos
             images.forEach(img => img.classList.remove('active'));
             dots.forEach(dot => dot.classList.remove('active'));
 
-            // Mostramos la nueva imagen y activamos el nuevo punto
             images[finalIndex].classList.add('active');
             if (dots[finalIndex]) {
                 dots[finalIndex].classList.add('active');
             }
 
-            // Actualizamos el índice en el elemento contenedor
             carousel.dataset.currentIndex = finalIndex;
         };
         
-        // Función para configurar los eventos de cada carrusel
+        // Función para configurar los eventos de cada carrusel (Original)
         const setupCarousels = () => {
             const carousels = document.querySelectorAll('.image-carousel');
             carousels.forEach(carousel => {
+                if (carousel.dataset.initialized) return;
+
                 const hasMultipleImages = carousel.dataset.hasMultiple === 'true';
                 if (!hasMultipleImages) return;
 
@@ -270,35 +362,32 @@
                 const nextBtn = carousel.querySelector('.next');
                 const dots = carousel.querySelectorAll('.image-dot');
 
-                // Configurar el punto inicial
                 updateCarousel(carousel, 0);
 
-                // Evento para el botón 'siguiente'
-                nextBtn.addEventListener('click', (e) => {
+                const handleNavigation = (e, step) => {
                     e.preventDefault();
+                    e.stopPropagation();
                     const currentIndex = parseInt(carousel.dataset.currentIndex);
-                    updateCarousel(carousel, currentIndex + 1);
-                });
+                    updateCarousel(carousel, currentIndex + step);
+                };
 
-                // Evento para el botón 'anterior'
-                prevBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const currentIndex = parseInt(carousel.dataset.currentIndex);
-                    updateCarousel(carousel, currentIndex - 1);
-                });
+                nextBtn.addEventListener('click', (e) => handleNavigation(e, 1));
+                prevBtn.addEventListener('click', (e) => handleNavigation(e, -1));
 
-                // Eventos para los puntos de navegación
                 dots.forEach(dot => {
                     dot.addEventListener('click', (e) => {
                         e.preventDefault();
+                        e.stopPropagation();
                         const newIndex = parseInt(e.target.dataset.index);
                         updateCarousel(carousel, newIndex);
                     });
                 });
+
+                carousel.dataset.initialized = 'true';
             });
         };
 
-        // Función para renderizar todos los productos en el DOM
+        // Función para renderizar todos los productos en el DOM (Original)
         const renderProducts = (productsToRender) => {
             if (productsToRender.length === 0) {
                 productsContainer.innerHTML = '';
@@ -306,53 +395,49 @@
                 return;
             }
             productsContainer.innerHTML = productsToRender.map(renderProductCard).join('');
-            setupCarousels(); // Llamamos a la función para configurar los carruseles
+            setupCarousels();
             messageElement.classList.add('hidden');
         };
 
-        // Función para poblar el filtro de categorías y subcategorías
+        // Función para poblar los filtros (Original)
         const populateFilters = (products) => {
-            const categories = [...new Set(products.map(p => p.category))];
+            const categories = [...new Set(products.map(p => p.category))].filter(Boolean);
+            categoryFilter.innerHTML = '<option value="all">Todas las Categorías</option>';
             categories.forEach(category => {
                 const option = document.createElement('option');
                 option.value = category;
                 option.textContent = category;
                 categoryFilter.appendChild(option);
             });
-            updateSubcategories();
         };
 
-        // Función para actualizar las subcategorías según la categoría seleccionada
-        const updateSubcategories = () => {
-            const selectedCategory = categoryFilter.value;
-            const subcategories = (selectedCategory === 'all')
-                ? [...new Set(allProducts.map(p => p.subcategory))]
-                : [...new Set(allProducts.filter(p => p.category === selectedCategory).map(p => p.subcategory))];
-
-            subcategoryFilter.innerHTML = '<option value="all">Todas las Subcategorías</option>';
-            subcategories.forEach(subcategory => {
-                const option = document.createElement('option');
-                option.value = subcategory;
-                option.textContent = subcategory;
-                subcategoryFilter.appendChild(option);
-            });
-        };
-
-        // Función para filtrar y ordenar los productos
+        // MODIFICADA: Función para filtrar y ordenar los productos (Ahora incluye la lógica de búsqueda)
         const filterAndSortProducts = () => {
             let filteredProducts = [...allProducts];
             const selectedCategory = categoryFilter.value;
-            const selectedSubcategory = subcategoryFilter.value;
             const selectedSort = sortByPrice.value;
+            const searchTerm = searchInput.value.toLowerCase().trim();
 
+            // Lógica de Búsqueda
+            if (searchTerm) {
+                filteredProducts = filteredProducts.filter(product => {
+                    const nameMatch = product.name.toLowerCase().includes(searchTerm);
+                    const categoryMatch = product.category ? product.category.toLowerCase().includes(searchTerm) : false;
+                    const subcategoryMatch = product.subcategory ? product.subcategory.toLowerCase().includes(searchTerm) : false;
+
+                    // Coincide si el término está en nombre, categoría o subcategoría
+                    return nameMatch || categoryMatch || subcategoryMatch;
+                });
+            }
+            // Fin Lógica de Búsqueda
+
+
+            // Filtrado por Categoría
             if (selectedCategory !== 'all') {
                 filteredProducts = filteredProducts.filter(product => product.category === selectedCategory);
             }
 
-            if (selectedSubcategory !== 'all') {
-                filteredProducts = filteredProducts.filter(product => product.subcategory === selectedSubcategory);
-            }
-
+            // Ordenamiento por Precio
             if (selectedSort === 'asc') {
                 filteredProducts.sort((a, b) => a.price - b.price);
             } else if (selectedSort === 'desc') {
@@ -362,15 +447,12 @@
             renderProducts(filteredProducts);
         };
 
-        // Event Listeners para los filtros
-        categoryFilter.addEventListener('change', () => {
-            updateSubcategories();
-            filterAndSortProducts();
-        });
-        subcategoryFilter.addEventListener('change', filterAndSortProducts);
+        // Event Listeners para los filtros (Original + Buscador)
+        categoryFilter.addEventListener('change', filterAndSortProducts);
         sortByPrice.addEventListener('change', filterAndSortProducts);
+        searchInput.addEventListener('input', filterAndSortProducts);
 
-        // Cargar productos de Firestore
+        // Cargar productos de Firestore (Original)
         const fetchProducts = async () => {
             try {
                 showMessage('Cargando productos...');
@@ -391,7 +473,22 @@
             }
         };
 
-        window.addEventListener('load', fetchProducts);
+        // Iniciar la carga y los listeners al cargar la página
+        window.addEventListener('load', () => {
+            const bannerDots = bannerDotsContainer.querySelectorAll('.banner-dot');
+            bannerDots.forEach(dot => {
+                dot.addEventListener('click', (e) => {
+                    const targetIndex = parseInt(e.target.dataset.index);
+                    updateBannerCarousel(targetIndex);
+                    startBannerAutoPlay();
+                });
+            });
+            startBannerAutoPlay();
+            
+            setupCategoryBubbles(); // <--- NUEVO: Configura los eventos para las burbujas
+            
+            fetchProducts();
+        });
     </script>
 </body>
 </html>
