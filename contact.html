@@ -18,21 +18,52 @@
             height: 50px;
             width: auto;
         }
-        .profile-card img {
+        /* Clase para un mejor efecto hover en los enlaces de contacto */
+        .contact-link {
+            transition: color 0.3s ease-in-out, transform 0.1s ease-in-out;
+        }
+        .contact-link:hover {
+            transform: translateY(-1px); /* Pequeño levantamiento al pasar el ratón */
+        }
+        /* Estilos mejorados para las tarjetas de perfil */
+        .profile-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem; /* p-6 */
+            border-radius: 0.75rem; /* rounded-lg */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* sombra por defecto de Tailwind */
+            background-color: #ffffff; /* bg-white */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            text-align: center;
+            height: 200px; /* Altura fija para uniformidad */
+            justify-content: center; /* Centrar contenido verticalmente */
+        }
+        .profile-card:hover {
+            transform: translateY(-5px); /* Pequeño levantamiento */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Sombra más pronunciada al hover */
+        }
+        /* Estilos para la imagen del ícono (PNG) */
+        .profile-icon-img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            margin-bottom: 0.5rem;
             transition: transform 0.3s ease-in-out;
         }
-        .profile-card:hover img {
-            transform: scale(1.05);
+        .profile-card:hover .profile-icon-img {
+            transform: scale(1.1); /* Efecto de escala en la imagen al hover */
+        }
+        .profile-card h3 {
+            font-size: 1.5rem; 
         }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
 
-    <!-- Header -->
     <header class="bg-white shadow-md">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="index.html" class="flex items-center space-x-2">
-                <!-- Logo actualizado a la ruta correcta -->
                 <img src="assets/logo.png" alt="GADU Containers Logo" class="header-logo">
                 <span class="text-3xl font-bold text-gray-800">
                     <span style="color: #13B71C;">GADU</span>
@@ -40,7 +71,6 @@
             </a>
             <nav>
                 <ul class="flex space-x-4">
-                    <!-- Botones de navegación simplificados -->
                     <li><a href="index.html" class="text-gray-600 hover:text-green-600 transition-colors duration-300 font-medium">Inicio</a></li>
                     <li><a href="contact.html" class="text-green-600 font-semibold">Contacto</a></li>
                 </ul>
@@ -48,7 +78,6 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="container mx-auto px-4 py-8 flex-grow">
         <div class="max-w-4xl mx-auto">
             <h1 class="text-center text-4xl font-extrabold text-gray-800 mb-8">Contáctanos</h1>
@@ -56,52 +85,39 @@
             <div class="bg-white p-8 rounded-xl shadow-lg mb-8">
                 <p class="text-center text-lg text-gray-600 mb-6">Estamos aquí para ayudarte. No dudes en contactarnos a través de los siguientes medios:</p>
 
-                <!-- Secciones de contacto -->
                 <div class="flex flex-col md:flex-row justify-around items-center space-y-6 md:space-y-0 md:space-x-6">
-                    <!-- WhatsApp -->
                     <div class="text-center">
                         <h2 class="text-xl font-bold text-gray-800 mb-2">WhatsApp</h2>
-                        <a href="https://wa.me/573106927989" target="_blank" class="block text-green-600 hover:text-green-800 transition-colors duration-300 font-medium text-lg mb-2">+57 310 692 7989</a>
-                        <a href="https://wa.me/573107509712" target="_blank" class="block text-green-600 hover:text-green-800 transition-colors duration-300 font-medium text-lg">+57 310 750 9712</a>
+                        <a href="https://wa.me/573106927989" target="_blank" class="contact-link block text-green-600 hover:text-green-800 transition-colors duration-300 font-medium text-lg mb-2">+57 310 692 7989</a>
+                        <a href="https://wa.me/573107509712" target="_blank" class="contact-link block text-green-600 hover:text-green-800 transition-colors duration-300 font-medium text-lg">+57 310 750 9712</a>
                     </div>
-                    <!-- Correo electrónico -->
                     <div class="text-center">
                         <h2 class="text-xl font-bold text-gray-800 mb-2">Correo Electrónico</h2>
-                        <a href="mailto:gaducompany0@gmail.com" class="block text-green-600 hover:text-green-800 transition-colors duration-300 font-medium text-lg">gaducompany0@gmail.com</a>
+                        <a href="mailto:gaducompany0@gmail.com" class="contact-link block text-green-600 hover:text-green-800 transition-colors duration-300 font-medium text-lg">gaducompany0@gmail.com</a>
                     </div>
                 </div>
             </div>
 
-            <!-- Sección de perfiles de Instagram -->
             <div class="bg-white p-8 rounded-xl shadow-lg mb-8">
                 <h2 class="text-center text-2xl font-bold text-gray-800 mb-6">Nuestras Redes Sociales</h2>
                 <p class="text-center text-lg text-gray-600 mb-8">
-                    Explora nuestras cuentas especializadas para conocer más sobre cada línea de negocio.
-                    <br class="hidden md:block">¡Síguenos para no perderte ninguna novedad!
+                    Síguenos en nuestras cuentas oficiales para estar al día con todas las novedades de GADU.
                 </p>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- GADU Fashion -->
-                    <a href="https://www.instagram.com/gadufashion.col/" target="_blank" class="profile-card flex flex-col items-center p-6 rounded-lg shadow-md bg-gray-50 transition-transform transform hover:scale-105">
-                        <img src="assets/igfashion.png" alt="GADU Fashion" class="w-full h-auto rounded-lg mb-4 object-cover">
-                        <h3 class="text-xl font-semibold text-gray-700">GADU Fashion</h3>
+                <div class="flex flex-col md:flex-row justify-center items-center gap-8">
+                    
+                    <a href="https://www.instagram.com/gaduapp.col" target="_blank" class="profile-card w-full md:w-64">
+                        <img src="assets/instagram.png" alt="Icono de Instagram" class="profile-icon-img">
+                        <h3 class="text-gray-700 text-lg">@gaduapp.col</h3>
                     </a>
                     
-                    <!-- GADU Sport -->
-                    <a href="https://www.instagram.com/gadusport.col/" target="_blank" class="profile-card flex flex-col items-center p-6 rounded-lg shadow-md bg-gray-50 transition-transform transform hover:scale-105">
-                         <img src="assets/igsport.png" alt="GADU Sport" class="w-full h-auto rounded-lg mb-4 object-cover">
-                        <h3 class="text-xl font-semibold text-gray-700">GADU Sport</h3>
-                    </a>
-                    
-                    <!-- GADU Tech -->
-                    <a href="https://www.instagram.com/gadutech.col/" target="_blank" class="profile-card flex flex-col items-center p-6 rounded-lg shadow-md bg-gray-50 transition-transform transform hover:scale-105">
-                         <img src="assets/igtech.png" alt="GADU Tech" class="w-full h-auto rounded-lg mb-4 object-cover">
-                        <h3 class="text-xl font-semibold text-gray-700">GADU Tech</h3>
+                    <a href="https://www.tiktok.com/@gadusport.col" target="_blank" class="profile-card w-full md:w-64">
+                         <img src="assets/tik-tok.png" alt="Icono de TikTok" class="profile-icon-img">
+                        <h3 class="text-gray-700 text-lg">@gadusport.col</h3>
                     </a>
                 </div>
             </div>
 
-            <!-- Formulario de contacto -->
             <div class="bg-white p-8 rounded-xl shadow-lg">
                 <h2 class="text-center text-2xl font-bold text-gray-800 mb-6">Envíanos un Mensaje</h2>
                 <form id="contact-form" class="space-y-6">
@@ -117,17 +133,24 @@
                         <label for="message" class="block text-gray-700 font-semibold mb-2">Tu Mensaje</label>
                         <textarea id="message" name="message" rows="5" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required></textarea>
                     </div>
-                    <button type="submit" class="w-full text-white font-semibold py-3 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-300" style="background-color: #13B71C; hover:background-color: #0d8c11; box-shadow: 0 0 0 2px rgba(19, 183, 28, 0.25);">
+                    <button type="submit" class="w-full text-white font-semibold py-3 px-6 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-300" style="background-color: #13B71C; box-shadow: 0 0 0 2px rgba(19, 183, 28, 0.25);">
                         Enviar Mensaje
                     </button>
+                    <script>
+                        document.querySelector('#contact-form button[type="submit"]').addEventListener('mouseover', function() {
+                            this.style.backgroundColor = '#0d8c11'; // Verde más oscuro al pasar el ratón
+                        });
+                        document.querySelector('#contact-form button[type="submit"]').addEventListener('mouseout', function() {
+                            this.style.backgroundColor = '#13B71C'; // Color original al salir
+                        });
+                    </script>
                 </form>
                 <div id="form-message" class="text-center text-sm font-medium mt-4 hidden"></div>
             </div>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="text-white text-center p-4 mt-auto" style="background-color: #84a484;">
+    <footer class="text-white text-center p-4 mt-auto" style="background-color: #106616;">
         <div class="container mx-auto">
             <p>&copy; 2024 GADU App. Todos los derechos reservados.</p>
         </div>
@@ -142,6 +165,10 @@
             const message = document.getElementById('message').value;
             const formMessage = document.getElementById('form-message');
 
+            // Limpiar mensajes anteriores
+            formMessage.classList.add('hidden');
+            formMessage.classList.remove('text-red-600', 'text-green-600');
+
             if (!name || !email || !message) {
                 formMessage.textContent = 'Por favor, completa todos los campos.';
                 formMessage.classList.remove('hidden');
@@ -150,19 +177,19 @@
             }
 
             // Construye el enlace de correo
-            const subject = `Mensaje de contacto de ${name}`;
+            const subject = `Mensaje de contacto de ${name} (GADU)`; 
             const body = `Nombre: ${name}%0ACorreo: ${email}%0A%0AMensaje:%0A${message}`;
             const mailtoLink = `mailto:gaducompany0@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
             // Abre el cliente de correo del usuario
             window.open(mailtoLink, '_self');
 
-            // Muestra un mensaje de éxito
-            formMessage.textContent = '¡Gracias por contactarnos! Se abrirá su cliente de correo.';
-            formMessage.classList.remove('hidden', 'text-red-600');
+            // Muestra un mensaje de éxito (Nota: el usuario tendrá que enviar el correo en su cliente)
+            formMessage.textContent = '¡Gracias por contactarnos! Se abrirá tu cliente de correo para enviar el mensaje.';
+            formMessage.classList.remove('hidden');
             formMessage.classList.add('text-green-600');
 
-            // Opcional: Limpia el formulario
+            // Opcional: Limpia el formulario después de abrir el cliente de correo
             this.reset();
         });
     </script>
