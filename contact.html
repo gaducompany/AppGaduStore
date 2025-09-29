@@ -10,10 +10,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Estilo base de la fuente y color de fondo */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f3f4f6;
         }
+        /* Altura del logo en el header */
         .header-logo {
             height: 50px;
             width: auto;
@@ -25,14 +27,14 @@
         .contact-link:hover {
             transform: translateY(-1px); /* Pequeño levantamiento al pasar el ratón */
         }
-        /* Estilos mejorados para las tarjetas de perfil */
+        /* Estilos mejorados para las tarjetas de perfil (Redes Sociales) */
         .profile-card {
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 1.5rem; /* p-6 */
             border-radius: 0.75rem; /* rounded-lg */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* sombra por defecto de Tailwind */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             background-color: #ffffff; /* bg-white */
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
             text-align: center;
@@ -43,7 +45,7 @@
             transform: translateY(-5px); /* Pequeño levantamiento */
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Sombra más pronunciada al hover */
         }
-        /* Estilos para la imagen del ícono (PNG) */
+        /* Estilos para la imagen del ícono */
         .profile-icon-img {
             width: 50px;
             height: 50px;
@@ -61,21 +63,33 @@
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
 
-    <header class="bg-white shadow-md">
+    <header class="bg-white shadow-md relative z-50"> 
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="index.html" class="flex items-center space-x-2">
-                <img src="assets/logo.png" alt="GADU Containers Logo" class="header-logo">
+                <img src="assets/icon.png" alt="GADU Containers Logo" class="header-logo">
                 <span class="text-3xl font-bold text-gray-800">
                     <span style="color: #13B71C;">GADU</span>
                 </span>
             </a>
-            <nav>
+            
+            <nav class="hidden sm:block"> 
                 <ul class="flex space-x-4">
                     <li><a href="index.html" class="text-gray-600 hover:text-green-600 transition-colors duration-300 font-medium">Volver al inicio</a></li>
                     <li><a href="contact.html" class="text-green-600 font-semibold">Contacto</a></li>
                 </ul>
             </nav>
+
+            <button id="mobile-menu-button" class="sm:hidden text-gray-600 hover:text-green-600 p-2 rounded">
+                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
         </div>
+        
+        <nav id="mobile-menu" class="hidden absolute w-full bg-white shadow-lg border-t border-gray-200">
+            <ul class="flex flex-col p-4 space-y-2">
+                <li><a href="index.html" class="text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium block p-2 rounded hover:bg-gray-100">Volver al inicio</a></li>
+                <li><a href="contact.html" class="text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium block p-2 rounded hover:bg-gray-100">Contacto</a></li>
+            </ul>
+        </nav>
     </header>
 
     <main class="container mx-auto px-4 py-8 flex-grow">
@@ -112,7 +126,7 @@
                     </a>
                     
                     <a href="https://www.tiktok.com/@gadusport.col" target="_blank" class="profile-card w-full md:w-64">
-                         <img src="assets/tik-tok.png" alt="Icono de TikTok" class="profile-icon-img">
+                           <img src="assets/tik-tok.png" alt="Icono de TikTok" class="profile-icon-img">
                         <h3 class="text-gray-700 text-lg">@gadusport.col</h3>
                     </a>
                 </div>
@@ -137,11 +151,12 @@
                         Enviar Mensaje
                     </button>
                     <script>
+                        // Scripts para el efecto hover del botón de envío
                         document.querySelector('#contact-form button[type="submit"]').addEventListener('mouseover', function() {
-                            this.style.backgroundColor = '#0d8c11'; // Verde más oscuro al pasar el ratón
+                            this.style.backgroundColor = '#0d8c11'; 
                         });
                         document.querySelector('#contact-form button[type="submit"]').addEventListener('mouseout', function() {
-                            this.style.backgroundColor = '#13B71C'; // Color original al salir
+                            this.style.backgroundColor = '#13B71C'; 
                         });
                     </script>
                 </form>
@@ -157,15 +172,15 @@
     </footer>
 
     <script>
+        // Lógica para el formulario de contacto (envío mailto)
         document.getElementById('contact-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Evita que el formulario se envíe de forma tradicional
+            event.preventDefault(); 
 
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const message = document.getElementById('message').value;
             const formMessage = document.getElementById('form-message');
 
-            // Limpiar mensajes anteriores
             formMessage.classList.add('hidden');
             formMessage.classList.remove('text-red-600', 'text-green-600');
 
@@ -176,21 +191,29 @@
                 return;
             }
 
-            // Construye el enlace de correo
             const subject = `Mensaje de contacto de ${name} (GADU)`; 
             const body = `Nombre: ${name}%0ACorreo: ${email}%0A%0AMensaje:%0A${message}`;
             const mailtoLink = `mailto:gaducompany0@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-            // Abre el cliente de correo del usuario
             window.open(mailtoLink, '_self');
 
-            // Muestra un mensaje de éxito (Nota: el usuario tendrá que enviar el correo en su cliente)
             formMessage.textContent = '¡Gracias por contactarnos! Se abrirá tu cliente de correo para enviar el mensaje.';
             formMessage.classList.remove('hidden');
             formMessage.classList.add('text-green-600');
 
-            // Opcional: Limpia el formulario después de abrir el cliente de correo
             this.reset();
+        });
+
+        // Lógica para el menú de hamburguesa (NUEVA)
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
         });
     </script>
 </body>
