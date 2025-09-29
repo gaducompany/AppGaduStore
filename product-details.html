@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalles del Producto</title>
+    <title>Detalles del Producto - GADU</title>
+    <link rel="icon" type="image/png" href="assets/icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -17,9 +18,11 @@
             height: 50px;
             width: auto;
         }
-        /* Estilos para la galería de imágenes */
+        /* Estilos de la Galería y Miniaturas */
         .gallery-image {
             display: none;
+            max-height: 100%; 
+            object-fit: contain; 
         }
         .gallery-image.active {
             display: block;
@@ -28,16 +31,45 @@
             cursor: pointer;
             border: 2px solid transparent;
             transition: border-color 0.3s ease;
+            min-width: 80px; 
         }
         .thumbnail-image.active {
             border-color: #13B71C;
+        }
+        /* ----------------------------------------------------- */
+        /* ESTILOS DE LA LUPA (MAGNIFIER) - 200PX */
+        /* ----------------------------------------------------- */
+        .zoom-container {
+            position: absolute;
+            top: 0;
+            /* TAMAÑO DE LA LUPA AUMENTADO */
+            width: 200px; 
+            height: 200px;
+            border: 1px solid #ccc;
+            border-radius: 50%; 
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            pointer-events: none; 
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+            transform: translate(10px, -10px); 
+            background-repeat: no-repeat;
+            z-index: 10;
+            display: none; 
+        }
+        /* Mostrar la lupa solo en pantallas medianas y grandes (desktop) */
+        @media (min-width: 768px) {
+            .zoom-container {
+                display: block;
+            }
+        }
+        .main-image-wrapper:hover .zoom-container {
+            opacity: 1; 
         }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
 
-    <!-- Header -->
-    <header class="bg-white shadow-md">
+    <header class="bg-white shadow-md relative z-50">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="index.html" class="flex items-center space-x-2">
                 <img src="assets/icon.png" alt="GADU Containers Logo" class="header-logo">
@@ -45,24 +77,34 @@
                     <span style="color: #13B71C;">GADU</span>
                 </span>
             </a>
-            <nav>
+            
+            <nav class="hidden sm:block"> 
                 <ul class="flex space-x-4">
                     <li><a href="index.html" class="text-gray-600 hover:text-green-600 transition-colors duration-300 font-medium">Volver al inicio</a></li>
                     <li><a href="contact.html" class="text-gray-600 hover:text-green-600 transition-colors duration-300 font-medium">Contacto</a></li>
                 </ul>
             </nav>
+
+            <button id="mobile-menu-button" class="sm:hidden text-gray-600 hover:text-green-600 p-2 rounded">
+                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
         </div>
+        
+        <nav id="mobile-menu" class="hidden absolute w-full bg-white shadow-lg border-t border-gray-200">
+            <ul class="flex flex-col p-4 space-y-2">
+                <li><a href="index.html" class="text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium block p-2 rounded hover:bg-gray-100">Volver al inicio</a></li>
+                <li><a href="contact.html" class="text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium block p-2 rounded hover:bg-gray-100">Contacto</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <!-- Main Content -->
     <main class="container mx-auto px-4 py-8 flex-grow">
-        <div id="product-detail-container" class="bg-white p-8 rounded-xl shadow-lg" style="box-shadow: 0 4px 6px -1px #84a484, 0 2px 4px -1px #84a484;">
+        <div id="product-detail-container" class="bg-white p-8 rounded-xl shadow-lg"> 
             <p id="loading-message" class="text-center text-gray-500 font-medium">Cargando detalles del producto...</p>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="text-white text-center p-4 mt-8" style="background-color: #84a484;">
+    <footer class="text-white text-center p-4 mt-8" style="background-color: #106616;">
         <div class="container mx-auto">
             <p>&copy; 2024 GADU App. Todos los derechos reservados.</p>
         </div>
@@ -72,7 +114,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // **PASO 1: Inserta tu objeto de configuración de Firebase aquí**
+        // **PASO 1: Objeto de configuración de Firebase**
         const firebaseConfig = {
             apiKey: "AIzaSyCsRnbAvV5vLDv5-rMq8uT7rcCK9YRz-UA",
             authDomain: "appgadustore.firebaseapp.com",
@@ -95,38 +137,76 @@
 
         const productDetailContainer = document.getElementById('product-detail-container');
         const loadingMessage = document.getElementById('loading-message');
+        // El factor de aumento (2x)
+        const zoomLevel = 2; 
+
+        // Función para configurar el comportamiento de la lupa
+        const setupZoomMagnifier = (mainImageElement, zoomElement, imageUrl) => {
+            zoomElement.style.backgroundImage = `url('${imageUrl}')`;
+            
+            mainImageElement.onmousemove = (e) => {
+                const rect = mainImageElement.getBoundingClientRect();
+                let x = e.clientX - rect.left; 
+                let y = e.clientY - rect.top; 
+
+                // Calcula la posición del fondo ampliado (efecto de espejo)
+                let bgPosX = (-x * zoomLevel) + (zoomElement.offsetWidth / 2);
+                let bgPosY = (-y * zoomLevel) + (zoomElement.offsetHeight / 2);
+
+                // Mueve la lupa para que siga al cursor
+                zoomElement.style.left = `${x}px`;
+                zoomElement.style.top = `${y}px`;
+                zoomElement.style.transform = 'translate(20px, 20px)'; // Pequeño offset para mejor visibilidad
+
+                // Aplica el tamaño y la posición del fondo
+                zoomElement.style.backgroundSize = `${rect.width * zoomLevel}px ${rect.height * zoomLevel}px`;
+                zoomElement.style.backgroundPosition = `${bgPosX}px ${bgPosY}px`;
+            };
+
+            // Ocultar la lupa al salir
+            mainImageElement.onmouseleave = () => {
+                zoomElement.style.opacity = '0';
+            };
+
+            // Mostrar la lupa al entrar (solo en desktop)
+            mainImageElement.onmouseenter = () => {
+                if (window.innerWidth >= 768) { 
+                    zoomElement.style.opacity = '1';
+                }
+            };
+        };
 
         const renderProductDetails = (product) => {
             const imageUrls = Array.isArray(product.imageUrl) ? product.imageUrl : [product.imageUrl];
             
             const galleryHtml = imageUrls.map((url, index) => {
                 const isActive = index === 0 ? 'active' : '';
-                return `<img src="${url}" alt="${product.name} - Imagen ${index + 1}" class="w-full h-96 object-contain gallery-image ${isActive}">`;
+                // data-full-url es usado por el JS para configurar la lupa
+                return `<img src="${url}" alt="${product.name} - Imagen ${index + 1}" class="w-full h-80 md:h-96 gallery-image ${isActive}" data-full-url="${url}">`; 
             }).join('');
 
             const thumbnailsHtml = imageUrls.map((url, index) => {
                 const isActive = index === 0 ? 'active' : '';
-                return `<img src="${url}" alt="Thumbnail ${index + 1}" class="w-20 h-20 object-cover rounded-md thumbnail-image ${isActive}" data-index="${index}">`;
+                return `<img src="${url}" alt="Thumbnail ${index + 1}" class="w-20 h-20 object-cover rounded-md thumbnail-image ${isActive}" data-index="${index}" data-full-url="${url}">`;
             }).join('');
 
             const html = `
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Galería de Imágenes -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8"> 
                     <div class="flex flex-col items-center">
-                        <div class="relative w-full h-96 mb-4 rounded-xl overflow-hidden bg-gray-200 flex items-center justify-center">
+                        <div id="main-image-wrapper" class="relative w-full h-80 md:h-96 mb-4 rounded-xl bg-gray-200 flex items-center justify-center main-image-wrapper">
                             ${galleryHtml}
+                            <div id="zoom-magnifier" class="zoom-container"></div>
                         </div>
-                        <div class="flex space-x-2 overflow-x-auto p-2">
+                        <div id="thumbnail-container" class="flex space-x-2 overflow-x-auto p-2 w-full justify-center">
                             ${thumbnailsHtml}
                         </div>
                     </div>
-                    <!-- Detalles del Producto -->
                     <div class="flex flex-col justify-start">
-                        <h1 class="text-4xl font-bold text-gray-800 mb-2">${product.name}</h1>
-                        <p class="text-xl text-gray-500 mb-4">${product.category} | ${product.subcategory}</p>
-                        <p class="text-5xl font-extrabold text-green-600 mb-6">$${product.price.toLocaleString('es-CO')}</p>
+                        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">${product.name}</h1>
+                        <p class="text-lg md:text-xl text-gray-500 mb-4">${product.category} | ${product.subcategory}</p>
+                        <p class="text-4xl md:text-5xl font-extrabold text-green-600 mb-6">$${product.price.toLocaleString('es-CO')}</p>
                         
-                        <h2 class="text-2xl font-semibold text-gray-800 mb-2">Descripción</h2>
+                        <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-2">Descripción</h2>
                         <p class="text-gray-700 mb-6">${product.description || 'Sin descripción disponible.'}</p>
                         
                         <button id="buy-button" class="w-full text-white font-semibold py-4 px-6 rounded-md text-xl focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-300" style="background-color: #13B71C; hover:background-color: #0d8c11; box-shadow: 0 0 0 2px rgba(19, 183, 28, 0.25);">
@@ -137,30 +217,42 @@
             `;
             productDetailContainer.innerHTML = html;
 
-            const buyButton = document.getElementById('buy-button');
-            buyButton.addEventListener('click', () => handleBuyClick(product));
-            
+            // --- Lógica de la Galería y Lupa ---
             const galleryImages = productDetailContainer.querySelectorAll('.gallery-image');
             const thumbnails = productDetailContainer.querySelectorAll('.thumbnail-image');
+            const mainImageWrapper = document.getElementById('main-image-wrapper');
+            const zoomMagnifier = document.getElementById('zoom-magnifier');
             
+            // Inicializa la lupa con la primera imagen
+            const initialImage = mainImageWrapper.querySelector('.gallery-image.active');
+            if (initialImage) {
+                setupZoomMagnifier(mainImageWrapper, zoomMagnifier, initialImage.dataset.fullUrl);
+            }
+
+            // Lógica de cambio de imagen/miniatura
             thumbnails.forEach(thumbnail => {
                 thumbnail.addEventListener('click', () => {
                     const targetIndex = parseInt(thumbnail.dataset.index);
+                    const newImageUrl = thumbnail.dataset.fullUrl;
+
                     galleryImages.forEach((img, index) => {
-                        if (index === targetIndex) {
-                            img.classList.add('active');
-                        } else {
-                            img.classList.remove('active');
-                        }
+                        img.classList.toggle('active', index === targetIndex);
                     });
                     thumbnails.forEach(thumb => thumb.classList.remove('active'));
                     thumbnail.classList.add('active');
+
+                    // Actualiza la lupa con la nueva imagen
+                    setupZoomMagnifier(mainImageWrapper, zoomMagnifier, newImageUrl);
                 });
             });
+
+            // Lógica del botón de compra
+            const buyButton = document.getElementById('buy-button');
+            buyButton.addEventListener('click', () => handleBuyClick(product));
         };
 
         const handleBuyClick = (product) => {
-            const whatsappNumber = "+573107509712";
+            const whatsappNumber = "+573107509712"; 
             const message = `Hola, estoy interesado en comprar el producto: ${product.name}, con precio de $${product.price.toLocaleString('es-CO')}.`;
             const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
@@ -172,7 +264,7 @@
             const productId = urlParams.get('id');
 
             if (!productId) {
-                productDetailContainer.innerHTML = '<p class="text-center text-red-500 font-semibold">Error: No se encontró el ID del producto en la URL.</p>';
+                productDetailContainer.innerHTML = '<p class="text-center text-red-500 font-semibold">Error: No se encontró el ID del producto en la URL. Asegúrate de usar product-details.html?id=...</p>';
                 loadingMessage.style.display = 'none';
                 return;
             }
@@ -198,6 +290,19 @@
         };
 
         window.addEventListener('load', fetchProductDetails);
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+        });
     </script>
 </body>
 </html>
