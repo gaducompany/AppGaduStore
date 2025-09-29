@@ -65,7 +65,7 @@
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
 
-    <header class="bg-white shadow-md">
+    <header class="bg-white shadow-md relative z-50"> 
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="#" class="flex items-center space-x-2">
                 <img src="assets/icon.png" alt="GADU Containers Logo" class="header-logo">
@@ -73,18 +73,30 @@
                     <span style="color: #13B71C;">GADU</span>
                 </span>
             </a>
-            <nav>
+            
+            <nav class="hidden sm:block"> 
                 <ul class="flex space-x-4">
                     <li><a href="#" class="text-gray-600 hover:text-green-600 transition-colors duration-300 font-medium">Inicio</a></li>
                     <li><a href="contact.html" class="text-gray-600 hover:text-green-600 transition-colors duration-300 font-medium">Contacto</a></li>
                 </ul>
             </nav>
+
+            <button id="mobile-menu-button" class="sm:hidden text-gray-600 hover:text-green-600 p-2 rounded">
+                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
         </div>
+        
+        <nav id="mobile-menu" class="hidden absolute w-full bg-white shadow-lg border-t border-gray-200">
+            <ul class="flex flex-col p-4 space-y-2">
+                <li><a href="#" class="text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium block p-2 rounded hover:bg-gray-100">Inicio</a></li>
+                <li><a href="contact.html" class="text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium block p-2 rounded hover:bg-gray-100">Contacto</a></li>
+            </ul>
+        </nav>
     </header>
 
     <main class="container mx-auto px-4 py-8 flex-grow">
 
-        <div id="banner-carousel" class="relative w-full h-[550px] rounded-2xl overflow-hidden shadow-2xl mb-10">
+        <div id="banner-carousel" class="relative w-full h-[200px] sm:h-[350px] md:h-[450px] lg:h-[550px] rounded-2xl overflow-hidden shadow-2xl mb-10">
             
             <div class="banner-slide active" 
                  style="background-image: url('assets/bannerglobal.png'); background-size: cover; background-position: center;">
@@ -118,77 +130,77 @@
         </div>
         
         <div class="py-6 mb-10 bg-white rounded-xl shadow-lg">
-            <div id="category-bubbles" class="flex justify-around items-start flex-wrap gap-4 px-4">
+            <div id="category-bubbles" class="flex justify-around items-start flex-wrap gap-4 md:gap-8 px-4">
                 
-                <div class="category-bubble text-center cursor-pointer p-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:bg-gray-50" data-category="Tecnologia">
-                    <div class="w-20 h-20 mx-auto mb-2 rounded-full flex items-center justify-center border-4" style="border-color: #13B71C; background-color: rgba(19, 183, 28, 0.1);">
-                        <img src="assets/icon-tecnologia.png" alt="Icono Tecnología" class="w-12 h-12 object-contain">
+                <div class="category-bubble text-center cursor-pointer p-2 sm:p-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:bg-gray-50" data-category="Tecnologia">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-full flex items-center justify-center border-4" style="border-color: #13B71C; background-color: rgba(19, 183, 28, 0.1);">
+                        <img src="assets/icon-tecnologia.png" alt="Icono Tecnología" class="w-10 h-10 sm:w-12 sm:h-12 object-contain">
                     </div>
-                    <p class="font-semibold text-gray-700">Tecnología</p>
+                    <p class="font-semibold text-gray-700 text-sm sm:text-base">Tecnología</p>
                 </div>
                 
-                <div class="category-bubble text-center cursor-pointer p-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:bg-gray-50" data-category="Moda">
-                    <div class="w-20 h-20 mx-auto mb-2 rounded-full flex items-center justify-center border-4" style="border-color: #13B71C; background-color: rgba(19, 183, 28, 0.1);">
-                        <img src="assets/icon-moda.png" alt="Icono Moda" class="w-12 h-12 object-contain">
+                <div class="category-bubble text-center cursor-pointer p-2 sm:p-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:bg-gray-50" data-category="Moda">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-full flex items-center justify-center border-4" style="border-color: #13B71C; background-color: rgba(19, 183, 28, 0.1);">
+                        <img src="assets/icon-moda.png" alt="Icono Moda" class="w-10 h-10 sm:w-12 sm:h-12 object-contain">
                     </div>
-                    <p class="font-semibold text-gray-700">Moda</p>
+                    <p class="font-semibold text-gray-700 text-sm sm:text-base">Moda</p>
                 </div>
                 
-                <div class="category-bubble text-center cursor-pointer p-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:bg-gray-50" data-category="Calzado">
-                    <div class="w-20 h-20 mx-auto mb-2 rounded-full flex items-center justify-center border-4" style="border-color: #13B71C; background-color: rgba(19, 183, 28, 0.1);">
-                        <img src="assets/icon-calzado.png" alt="Icono Calzado" class="w-12 h-12 object-contain">
+                <div class="category-bubble text-center cursor-pointer p-2 sm:p-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:bg-gray-50" data-category="Calzado">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-full flex items-center justify-center border-4" style="border-color: #13B71C; background-color: rgba(19, 183, 28, 0.1);">
+                        <img src="assets/icon-calzado.png" alt="Icono Calzado" class="w-10 h-10 sm:w-12 sm:h-12 object-contain">
                     </div>
-                    <p class="font-semibold text-gray-700">Calzado</p>
+                    <p class="font-semibold text-gray-700 text-sm sm:text-base">Calzado</p>
                 </div>
                 
-                <div class="category-bubble text-center cursor-pointer p-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:bg-gray-50" data-category="all">
-                    <div class="w-20 h-20 mx-auto mb-2 rounded-full flex items-center justify-center border-4" style="border-color: #13B71C; background-color: rgba(19, 183, 28, 0.1);">
-                    <img src="assets/icon-todo.png" alt="Icono Ver Todo" class="w-12 h-12 object-contain">
+                <div class="category-bubble text-center cursor-pointer p-2 sm:p-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:bg-gray-50" data-category="all">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-2 rounded-full flex items-center justify-center border-4" style="border-color: #13B71C; background-color: rgba(19, 183, 28, 0.1);">
+                    <img src="assets/icon-todo.png" alt="Icono Ver Todo" class="w-10 h-10 sm:w-12 sm:h-12 object-contain">
                     </div>
-                    <p class="font-semibold text-gray-700">Ver Todo</p>
+                    <p class="font-semibold text-gray-700 text-sm sm:text-base">Ver Todo</p>
                 </div>
             </div>
         </div>
         
-        <h1 class="text-center text-4xl font-extrabold text-gray-800 mb-8">Nuestros Productos</h1>
+        <h1 class="text-center text-3xl sm:text-4xl font-extrabold text-gray-800 mb-8">Nuestros Productos</h1>
 
-        <div class="bg-white p-6 rounded-lg shadow-sm mb-8 flex flex-col md:flex-row justify-between items-start md:items-end space-y-4 md:space-y-0 md:space-x-4">
+        <div class="bg-white p-4 sm:p-6 rounded-lg shadow-sm mb-8 flex flex-col md:flex-row justify-between items-start md:items-end space-y-4 md:space-y-0 md:space-x-4">
     
             <div class="w-full md:flex-1">
-                <label for="search-input" class="block text-gray-700 font-semibold mb-1">Buscar:</label>
+                <label for="search-input" class="block text-gray-700 font-semibold mb-1 text-sm sm:text-base">Buscar:</label>
                 <input 
                     type="text" 
                     id="search-input" 
                     placeholder="Nombre, Categoría o Subcategoría" 
-                    class="w-full p-2 border border-green-500 rounded-md focus:outline-none focus:ring-2 focus:ring-green-300" 
+                    class="w-full p-2 border border-green-500 rounded-md focus:outline-none focus:ring-2 focus:ring-green-300 text-sm sm:text-base" 
                     style="border-color: #13B71C; box-shadow: 0 0 0 1px #13B71C;">
             </div>
 
             <div class="w-full md:flex-1">
-                <label for="category-filter" class="block text-gray-700 font-semibold mb-1">Categoría:</label>
+                <label for="category-filter" class="block text-gray-700 font-semibold mb-1 text-sm sm:text-base">Categoría:</label>
                 <select 
                     id="category-filter" 
-                    class="w-full p-2 border border-green-500 rounded-md focus:outline-none focus:ring-2 focus:ring-green-300 appearance-none bg-white pr-8"
+                    class="w-full p-2 border border-green-500 rounded-md focus:outline-none focus:ring-2 focus:ring-green-300 appearance-none bg-white pr-8 text-sm sm:text-base"
                     style="border-color: #13B71C; box-shadow: 0 0 0 1px #13B71C;">
                     <option value="all">Todas las Categorías</option>
                     </select>
             </div>
 
             <div class="w-full md:flex-1">
-                <label for="subcategory-filter" class="block text-gray-700 font-semibold mb-1">Subcategoría:</label>
+                <label for="subcategory-filter" class="block text-gray-700 font-semibold mb-1 text-sm sm:text-base">Subcategoría:</label>
                 <select 
                     id="subcategory-filter" 
-                    class="w-full p-2 border border-green-500 rounded-md focus:outline-none focus:ring-2 focus:ring-green-300 appearance-none bg-white pr-8"
+                    class="w-full p-2 border border-green-500 rounded-md focus:outline-none focus:ring-2 focus:ring-green-300 appearance-none bg-white pr-8 text-sm sm:text-base"
                     style="border-color: #13B71C; box-shadow: 0 0 0 1px #13B71C;">
                     <option value="all">Todas las Subcategorías</option>
                     </select>
             </div>
 
             <div class="w-full md:flex-1">
-                <label for="sort-by-price" class="block text-gray-700 font-semibold mb-1">Precio:</label>
+                <label for="sort-by-price" class="block text-gray-700 font-semibold mb-1 text-sm sm:text-base">Precio:</label>
                 <select 
                     id="sort-by-price" 
-                    class="w-full p-2 border border-green-500 rounded-md focus:outline-none focus:ring-2 focus:ring-green-300 appearance-none bg-white pr-8"
+                    class="w-full p-2 border border-green-500 rounded-md focus:outline-none focus:ring-2 focus:ring-green-300 appearance-none bg-white pr-8 text-sm sm:text-base"
                     style="border-color: #13B71C; box-shadow: 0 0 0 1px #13B71C;">
                     <option value="default">Por Defecto</option>
                     <option value="asc">Menor a Mayor</option>
@@ -197,10 +209,10 @@
             </div>
         </div>
         
-        <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
         </div>
 
-        <div id="pagination-controls" class="flex justify-center items-center space-x-4 mt-8">
+        <div id="pagination-controls" class="flex justify-center items-center space-x-2 sm:space-x-4 mt-8">
             </div>
 
         <div id="message" class="text-center text-gray-500 font-medium mt-8 hidden"></div>
@@ -208,7 +220,7 @@
 
     <footer class="text-white text-center p-4" style="background-color: #84a484;">
         <div class="container mx-auto">
-            <p>&copy; 2024 GADU App. Todos los derechos reservados.</p>
+            <p class="text-sm sm:text-base">&copy; 2024 GADU App. Todos los derechos reservados.</p>
         </div>
     </footer>
 
@@ -248,9 +260,9 @@
         
         // **VARIABLES DE PAGINACIÓN LOCAL**
         let allProducts = []; 
-        let filteredAndSortedProducts = []; // Lista después de filtrar y ordenar
+        let filteredAndSortedProducts = []; 
         let currentPage = 1;
-        const productsPerPage = 12; // Muestra 12 productos por página
+        const productsPerPage = 12; 
 
         // === Lógica del Carrusel de Banners (sin cambios) ===
         const bannerSlides = document.querySelectorAll('#banner-carousel .banner-slide');
@@ -372,7 +384,7 @@
         };
         
         // ==========================================================
-        // FUNCIÓN: renderPaginationControls (NUEVA)
+        // FUNCIÓN: renderPaginationControls
         // ==========================================================
         const renderPaginationControls = (totalProducts) => {
             paginationControls.innerHTML = '';
@@ -385,7 +397,7 @@
             // Botón Anterior
             const prevButton = document.createElement('button');
             prevButton.textContent = 'Anterior';
-            prevButton.className = `px-4 py-2 rounded-lg font-semibold transition-colors duration-200 ${
+            prevButton.className = `px-3 py-1 sm:px-4 sm:py-2 rounded-lg font-semibold text-sm sm:text-base transition-colors duration-200 ${
                 currentPage === 1 
                 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
                 : 'bg-green-500 text-white hover:bg-green-600'
@@ -402,13 +414,13 @@
             // Indicador de página
             const pageInfo = document.createElement('span');
             pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
-            pageInfo.className = 'text-gray-700 font-medium mx-4';
+            pageInfo.className = 'text-gray-700 font-medium mx-2 sm:mx-4 text-sm sm:text-base';
             paginationControls.appendChild(pageInfo);
 
             // Botón Siguiente
             const nextButton = document.createElement('button');
             nextButton.textContent = 'Siguiente';
-            nextButton.className = `px-4 py-2 rounded-lg font-semibold transition-colors duration-200 ${
+            nextButton.className = `px-3 py-1 sm:px-4 sm:py-2 rounded-lg font-semibold text-sm sm:text-base transition-colors duration-200 ${
                 currentPage === totalPages
                 ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 : 'bg-green-500 text-white hover:bg-green-600'
@@ -428,7 +440,7 @@
 
 
         // ==========================================================
-        // FUNCIÓN CLAVE: filterAndSortProducts (ACTUALIZADA con PAGINACIÓN)
+        // FUNCIÓN CLAVE: filterAndSortProducts 
         // ==========================================================
         const filterAndSortProducts = () => {
             let tempProducts = [...allProducts]; 
@@ -485,7 +497,8 @@
         // Carga todos los productos de Firebase (sin cambios)
         const fetchProducts = async () => {
             try {
-                showMessage('Cargando todos los productos...');
+                // El mensaje de error que estás viendo está aquí. Se muestra aunque se carguen todos los productos.
+                showMessage('Cargando todos los productos...'); 
                 if (!db) {
                     throw new Error('Firestore no está inicializado.');
                 }
@@ -503,16 +516,20 @@
                 populateCategories(allProducts); 
                 
                 // Aplicar filtros iniciales (que ahora incluye paginación)
-                currentPage = 1; // Asegurar que empieza en la página 1
+                currentPage = 1; 
                 filterAndSortProducts();
 
             } catch (error) {
-                showMessage(`Error al cargar productos: ${error.message}.`);
-                console.error('Error al cargar productos (Local Filter):', error);
+                // **ATENCIÓN:** El error mostrado en tu consola (The query requires an index)
+                // ocurre si usas la colección 'products' en una consulta que involucra
+                // múltiples filtros (categoría, subcategoría, precio) o si ordenas
+                // con un campo diferente al de filtro.
+                showMessage(`Error al cargar productos (ver consola para detalles).`); 
+                console.error('Error de Firebase:', error);
             }
         };
 
-        // Event Listeners para filtros (actualizados para resetear la página)
+        // Event Listeners para filtros (sin cambios en la lógica)
         const setupFilterListeners = () => {
             const filterChangeHandler = () => {
                 currentPage = 1; // Reinicia la página al cambiar cualquier filtro
@@ -529,17 +546,30 @@
             searchInput.addEventListener('input', filterChangeHandler);
         };
 
+        // ==========================================================
+        // LÓGICA DEL MENÚ MÓVIL (NUEVA)
+        // ==========================================================
+        const setupMobileMenuToggle = () => {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+                // Simplemente alterna la clase 'hidden'
+                mobileMenu.classList.toggle('hidden');
+            });
+        };
 
         // Iniciar la carga y los listeners al cargar la página
         window.addEventListener('load', () => {
             setupBannerListeners();
             setupCategoryBubbles(); 
             setupFilterListeners();
+            setupMobileMenuToggle(); // **Nueva llamada**
             fetchProducts();
         });
 
         // ==========================================================
-        // FUNCIONES DE CARRUSEL Y RENDERIZADO (sin cambios)
+        // FUNCIONES DE CARRUSEL Y RENDERIZADO (sin cambios en la lógica)
         // ==========================================================
 
         const renderProductCard = (product) => {
@@ -554,25 +584,25 @@
                 return `<span class="image-dot ${index === 0 ? 'active' : ''}" data-index="${index}"></span>`;
             }).join('') : '';
 
-            let categorySubcategoryHtml = `<p class="text-sm text-gray-500 mb-2">${product.category || 'Sin Categoría'}</p>`;
+            let categorySubcategoryHtml = `<p class="text-xs sm:text-sm text-gray-500 mb-2">${product.category || 'Sin Categoría'}</p>`;
 
             if (product.category && product.subcategory) {
-                categorySubcategoryHtml = `<p class="text-sm text-gray-500 mb-2">${product.category} | ${product.subcategory}</p>`;
+                categorySubcategoryHtml = `<p class="text-xs sm:text-sm text-gray-500 mb-2">${product.category} | ${product.subcategory}</p>`;
             }
 
             return `
                 <a href="product-details.html?id=${product.id}" class="product-card-link">
-                    <div class="relative bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden" style="box-shadow: 0 4px 6px -1px #84a484, 0 2px 4px -1px #84a484;">
+                    <div class="relative bg-white p-4 sm:p-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden" style="box-shadow: 0 4px 6px -1px #84a484, 0 2px 4px -1px #84a484;">
                         <div class="image-carousel" data-product-id="${product.id}" data-current-index="0" data-has-multiple="${hasMultipleImages}">
                             ${imagesHtml}
                             ${hasMultipleImages ? `
                                 <button class="carousel-btn prev" onclick="event.preventDefault(); event.stopPropagation();">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                                     </svg>
                                 </button>
                                 <button class="carousel-btn next" onclick="event.preventDefault(); event.stopPropagation();">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                     </svg>
                                 </button>
@@ -581,11 +611,11 @@
                                 </div>
                             ` : ''}
                         </div>
-                        <h2 class="text-xl font-bold text-gray-800 mt-4 mb-1">${product.name}</h2>
+                        <h2 class="text-lg sm:text-xl font-bold text-gray-800 mt-4 mb-1">${product.name}</h2>
                         ${categorySubcategoryHtml}
-                        <p class="text-2xl font-extrabold" style="color: #13B71C;">$${product.price ? product.price.toLocaleString('es-CO') : 'N/A'}</p>
+                        <p class="text-xl sm:text-2xl font-extrabold" style="color: #13B71C;">$${product.price ? product.price.toLocaleString('es-CO') : 'N/A'}</p>
                     </div>
-                </a>
+                </a >
             `;
         };
 
